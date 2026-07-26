@@ -1,1 +1,13 @@
-sympy
+langchain
+langchain_community
+pypdf
+python-docx
+unstructured
+tiktoken
+langchain_text_splitters
+sentence-transformers
+langchain_huggingface
+faiss-cpu
+chromadb
+langchain_chroma
+langchain.vectorstores
