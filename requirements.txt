@@ -10,4 +10,4 @@ langchain_huggingface
 faiss-cpu
 chromadb
 langchain_chroma
-langchain.vectorstores
+langchain_ollama
