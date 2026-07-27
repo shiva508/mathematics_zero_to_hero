@@ -1,0 +1,23 @@
+RAG (Retrieval-Augmented Generation) is an AI technique that combines information retrieval with a Large Language Model (LLM) to generate more accurate, up-to-date, and context-aware responses.
+
+Instead of relying only on what the LLM learned during training, RAG first retrieves relevant information from an external knowledge source (such as PDFs, Word documents, Excel files, databases, or web pages) and then provides that information to the LLM as context.
+Example
+
+Suppose you have a company policy document that says:
+
+Employees receive 20 days of paid leave annually.
+
+If you ask a normal LLM:
+
+"How many paid leave days do employees receive?"
+
+It might answer from its general knowledge, which could be incorrect because it has never seen your company's document.
+
+With RAG:
+
+The document is stored in a vector database.
+Your question is converted into an embedding.
+The vector database retrieves the relevant policy.
+The LLM receives both your question and the retrieved text.
+
+Prompt sent to the LLM:

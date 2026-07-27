@@ -1,0 +1,14 @@
+{
+  "id": 1,
+  "name": "Jane Doe",
+  "email": "jane.doe@example.com",
+  "is_active": true,
+  "age": 28,
+  "hobbies": ["reading", "hiking", "coding"],
+  "address": {
+    "street": "123 Main Street",
+    "city": "Hyderabad",
+    "zipcode": "500001"
+  },
+  "phone_number": null
+}
