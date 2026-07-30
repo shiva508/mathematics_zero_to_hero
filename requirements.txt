@@ -16,3 +16,6 @@ pandas
 msoffcrypto-tool
 openpyxl
 jq
+tqdm
+python-docx
+tiktoken
