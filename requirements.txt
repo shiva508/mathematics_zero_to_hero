@@ -19,3 +19,4 @@ jq
 tqdm
 python-docx
 tiktoken
+pandas
