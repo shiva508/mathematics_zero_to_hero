@@ -1,0 +1,94 @@
+{
+  "eval_set_id": "eval_set_1",
+  "name": "eval_set_1",
+  "eval_cases": [
+    {
+      "eval_id": "How_long_do_I_have_to_return_something",
+      "conversation": [
+        {
+          "invocation_id": "e-815d44bd-e81b-411f-9d59-655bbd42d8b9",
+          "user_content": {
+            "parts": [
+              {
+                "text": "How long do I have to return something?"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "You have 30 days from delivery to return an item for a full refund."
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "invocation_events": [
+              {
+                "author": "evaluation_agent",
+                "content": {
+                  "parts": [
+                    {
+                      "function_call": {
+                        "id": "call_k6tdmx34",
+                        "args": {
+                          "topic": "returns"
+                        },
+                        "name": "get_policy"
+                      }
+                    }
+                  ],
+                  "role": "model"
+                },
+                "usage_metadata": {
+                  "cached_content_token_count": 0,
+                  "candidates_token_count": 17,
+                  "prompt_token_count": 249,
+                  "total_token_count": 266
+                },
+                "model_version": "ollama_chat/llama3.2:3b"
+              },
+              {
+                "author": "evaluation_agent",
+                "content": {
+                  "parts": [
+                    {
+                      "function_response": {
+                        "id": "call_k6tdmx34",
+                        "name": "get_policy",
+                        "response": {
+                          "status": "success",
+                          "topic": "returns",
+                          "policy": "You have 30 days from delivery to return an item for a full refund."
+                        }
+                      }
+                    }
+                  ],
+                  "role": "user"
+                }
+              },
+              {
+                "author": "evaluation_agent",
+                "usage_metadata": {
+                  "cached_content_token_count": 0,
+                  "candidates_token_count": 17,
+                  "prompt_token_count": 187,
+                  "total_token_count": 204
+                },
+                "model_version": "ollama_chat/llama3.2:3b"
+              }
+            ]
+          },
+          "creation_timestamp": 1792309802.441163
+        }
+      ],
+      "session_input": {
+        "app_name": "evaluation_pipeline",
+        "user_id": "user"
+      },
+      "creation_timestamp": 1792309822.212082
+    }
+  ],
+  "creation_timestamp": 1792309779.894961
+}
