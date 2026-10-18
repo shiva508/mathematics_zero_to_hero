@@ -15,8 +15,6 @@ Downstream agents read those values with {placeholder} templating.
 import os
 
 from google.adk.agents import LlmAgent
-from google.adk.models.google_llm import Gemini
-from google.genai import types
 
 planner = LlmAgent(
     model=os.getenv("ADK_MODEL", "ollama_chat/llama3.2:3b"),
