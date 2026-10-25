@@ -81,7 +81,7 @@ class DocDbStore:
             file_path: str,
             content_type: str,
             file_size: int,
-            shipment_id
+            shipment_id:int
     ) -> int | None:
         with sqlite3.connect(self.database_name) as conn:
             cursor = conn.execute(
@@ -94,7 +94,7 @@ class DocDbStore:
                     file_size,
                     shipment_id
                 )
-                VALUES (?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?)
                 """,
                 (
                     original_filename,

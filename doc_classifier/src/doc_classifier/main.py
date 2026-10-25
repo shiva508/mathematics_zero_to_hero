@@ -1,6 +1,6 @@
 import sqlite3
 
-from fastapi import FastAPI, HTTPException, status,File, HTTPException, UploadFile,Request
+from fastapi import FastAPI, HTTPException, status, File, HTTPException, UploadFile, Request, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
 import logging
@@ -135,8 +135,10 @@ def delete_shipment(awb: str):
 
 
 @app.post("/invoices/upload", status_code=201)
-async def upload_invoice(file: UploadFile = File(...)):
+async def upload_invoice(file: UploadFile = File(...), shipment_id: int = Form(...)):
     # Validate the original filename.
+    print(f"Selected shipment_id: {shipment_id}")
+    print(f"Uploaded file: {file.filename}")
     if not file.filename or Path(file.filename).suffix.lower() != ".pdf":
         raise HTTPException(
             status_code=400,
@@ -172,6 +174,7 @@ async def upload_invoice(file: UploadFile = File(...)):
             file_path=str(file_path.resolve()),
             content_type="application/pdf",
             file_size=len(content),
+            shipment_id=shipment_id
         )
 
         return {
