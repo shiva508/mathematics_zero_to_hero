@@ -81,16 +81,18 @@ class DocDbStore:
             file_path: str,
             content_type: str,
             file_size: int,
-    ) -> int:
+            shipment_id
+    ) -> int | None:
         with sqlite3.connect(self.database_name) as conn:
             cursor = conn.execute(
                 """
-                INSERT INTO invoices (
+                INSERT INTO shipment_documents (
                     original_filename,
                     stored_filename,
                     file_path,
                     content_type,
-                    file_size
+                    file_size,
+                    shipment_id
                 )
                 VALUES (?, ?, ?, ?, ?)
                 """,
@@ -100,6 +102,7 @@ class DocDbStore:
                     file_path,
                     content_type,
                     file_size,
+                    shipment_id
                 ),
             )
             return cursor.lastrowid
@@ -109,18 +112,18 @@ class DocDbStore:
             conn.row_factory = sqlite3.Row
 
             row = conn.execute(
-                "SELECT * FROM invoices WHERE id = ?",
+                "SELECT * FROM shipment_documents WHERE id = ?",
                 (invoice_id,),
             ).fetchone()
 
             return dict(row) if row else None
 
     def get_all_invoices(self) -> list[dict[str, Any]]:
-        with sqlite3.connect(self.db_path) as conn:
+        with sqlite3.connect(self.database_name) as conn:
             conn.row_factory = sqlite3.Row
 
             rows = conn.execute(
-                "SELECT * FROM invoices ORDER BY uploaded_at DESC"
+                "SELECT * FROM shipment_documents ORDER BY uploaded_at DESC"
             ).fetchall()
 
             return [dict(row) for row in rows]
