@@ -1,12 +1,15 @@
 import sqlite3
 
-from fastapi import FastAPI, HTTPException, status,File, HTTPException, UploadFile
+from fastapi import FastAPI, HTTPException, status,File, HTTPException, UploadFile,Request
+from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
 import logging
 import uuid
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from doc_classifier.db_store.doc_db_store import DocDbStore
 from doc_classifier.model.models import ShipmentCreate, ShipmentResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 UPLOAD_DIR = Path.cwd() / "uploads" / "invoices"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -15,20 +18,45 @@ MAX_FILE_SIZE = 20 * 1024 * 1024  # 20 MB
 
 logger = logging.getLogger(__name__)
 
+BASE_DIR = Path(__file__).resolve().parent
+PROJECT_DIR = BASE_DIR.parent.parent
+
 app = FastAPI(
     title="Shipment Information API",
     description="API for managing shipment information using SQLite",
     version="1.0.0"
 )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:4200",
+        "http://127.0.0.1:4200",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
+app.mount(
+    "/static",
+    StaticFiles(directory=PROJECT_DIR / "static"),
+    name="static",
+)
+
+# Configure HTML templates.
+templates = Jinja2Templates(
+    directory=BASE_DIR / "templates"
+)
 db = DocDbStore()
 
 
-@app.get("/")
-def home():
-    return {
-        "message": "Shipment Information API is running"
-    }
+@app.get("/", response_class=HTMLResponse)
+def home(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="dashboard.html",
+        context={"title": "Shipment Dashboard"},
+    )
 
 
 @app.post(

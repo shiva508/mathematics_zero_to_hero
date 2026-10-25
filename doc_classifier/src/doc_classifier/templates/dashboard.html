@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ title }}</title>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+        <h2>DocFlow</h2>
+
+        <nav>
+            <a href="/">Dashboard</a>
+            <a href="#create-shipment">Create Shipment</a>
+            <a href="#upload-invoice">Upload Invoice</a>
+            <a href="#shipments">Shipments</a>
+        </nav>
+    </aside>
+
+    <main class="content">
+
+        <header class="header">
+            <div>
+                <h1>Shipment Dashboard</h1>
+                <p>Manage shipments and their invoices.</p>
+            </div>
+
+            <button onclick="loadDashboard()">Refresh</button>
+        </header>
+
+        <section class="stats">
+
+            <div class="card">
+                <p>Total Shipments</p>
+                <h2 id="shipment-count">0</h2>
+            </div>
+
+            <div class="card">
+                <p>Total Invoices</p>
+                <h2 id="invoice-count">0</h2>
+            </div>
+
+        </section>
+
+        <section class="panel" id="create-shipment">
+            <h2>Create Shipment</h2>
+
+            <form id="shipment-form">
+
+                <label for="awb">AWB Number</label>
+                <input id="awb" name="awb" required>
+
+                <label for="origin">Origin</label>
+                <input id="origin" name="origin" required>
+
+                <label for="destination">Destination</label>
+                <input id="destination" name="destination" required>
+
+                <label for="status">Status</label>
+                <select id="status" name="status">
+                    <option value="created">Created</option>
+                    <option value="in_transit">In Transit</option>
+                    <option value="delivered">Delivered</option>
+                </select>
+
+                <button type="submit">Create Shipment</button>
+
+            </form>
+
+            <p id="shipment-message"></p>
+        </section>
+
+        <section class="panel" id="upload-invoice">
+            <h2>Upload Invoice</h2>
+
+            <form id="invoice-form">
+
+                <label for="shipment-id">Shipment</label>
+                <select id="shipment-id" name="shipment_id" required>
+                    <option value="">Select a shipment</option>
+                </select>
+
+                <label for="invoice-file">Invoice PDF</label>
+                <input
+                    id="invoice-file"
+                    name="file"
+                    type="file"
+                    accept=".pdf,application/pdf"
+                    required
+                >
+
+                <button type="submit">Upload Invoice</button>
+
+            </form>
+
+            <p id="invoice-message"></p>
+        </section>
+
+        <section class="panel" id="shipments">
+            <h2>All Shipments</h2>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>AWB</th>
+                            <th>Origin</th>
+                            <th>Destination</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="shipment-table">
+                        <tr>
+                            <td colspan="5">Loading shipments...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="panel" id="invoices">
+            <h2>Uploaded Invoices</h2>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Shipment ID</th>
+                            <th>Filename</th>
+                            <th>Uploaded At</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="invoice-table">
+                        <tr>
+                            <td colspan="4">Loading invoices...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<script src="/static/js/dashboard.js"></script>
+
+</body>
+</html>
