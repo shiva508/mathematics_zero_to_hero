@@ -1,5 +1,6 @@
 import sqlite3
-
+from pathlib import Path
+from typing import Any
 
 class DocDbStore:
 
@@ -16,6 +17,18 @@ class DocDbStore:
                     status TEXT NOT NULL,
                     origin TEXT NOT NULL,
                     destination TEXT NOT NULL
+                )
+            """)
+            connection.execute("""
+                CREATE TABLE IF NOT EXISTS shipment_documents (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    shipment_id INTEGER,
+                    original_filename TEXT NOT NULL,
+                    stored_filename TEXT NOT NULL UNIQUE,
+                    file_path TEXT NOT NULL,
+                    content_type TEXT NOT NULL,
+                    file_size INTEGER NOT NULL,
+                    uploaded_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
                 )
             """)
 
@@ -58,5 +71,56 @@ class DocDbStore:
                 FROM shipment_info
                 ORDER BY id DESC
             """).fetchall()
+
+            return [dict(row) for row in rows]
+
+    def save_invoice(
+            self,
+            original_filename: str,
+            stored_filename: str,
+            file_path: str,
+            content_type: str,
+            file_size: int,
+    ) -> int:
+        with sqlite3.connect(self.database_name) as conn:
+            cursor = conn.execute(
+                """
+                INSERT INTO invoices (
+                    original_filename,
+                    stored_filename,
+                    file_path,
+                    content_type,
+                    file_size
+                )
+                VALUES (?, ?, ?, ?, ?)
+                """,
+                (
+                    original_filename,
+                    stored_filename,
+                    file_path,
+                    content_type,
+                    file_size,
+                ),
+            )
+            return cursor.lastrowid
+
+    def get_invoice(self, invoice_id: int) -> dict[str, Any] | None:
+        with sqlite3.connect(self.database_name) as conn:
+            conn.row_factory = sqlite3.Row
+
+            row = conn.execute(
+                "SELECT * FROM invoices WHERE id = ?",
+                (invoice_id,),
+            ).fetchone()
+
+            return dict(row) if row else None
+
+    def get_all_invoices(self) -> list[dict[str, Any]]:
+        with sqlite3.connect(self.db_path) as conn:
+            conn.row_factory = sqlite3.Row
+
+            rows = conn.execute(
+                "SELECT * FROM invoices ORDER BY uploaded_at DESC"
+            ).fetchall()
 
             return [dict(row) for row in rows]
