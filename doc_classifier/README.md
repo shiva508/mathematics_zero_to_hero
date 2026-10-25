@@ -1,0 +1,1 @@
+# uv run uvicorn doc_classifier.main:app --reload --app-dir src

@@ -1,0 +1,27 @@
+[project]
+name = "doc-classifier"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "shiva508", email = "dasarishiva1@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "chromadb>=1.5.9",
+    "fastapi>=0.162.0",
+    "langchain>=1.4.7",
+    "langchain-community>=0.4.2",
+    "pydantic>=2.14.1",
+    "pypdf>=6.21.2",
+    "sentence-transformers>=6.2.0",
+    "sqlite3i>=0.0.2",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[project.scripts]
+doc-classifier = "doc_classifier:main"
+
+[build-system]
+requires = ["uv_build>=0.13.5,<0.14.0"]
+build-backend = "uv_build"
