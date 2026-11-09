@@ -127,3 +127,28 @@ class DocDbStore:
             ).fetchall()
 
             return [dict(row) for row in rows]
+
+    def get_invoices_by_shipment_id(self, shipment_id: int):
+        query = """
+            SELECT
+                id,
+                shipment_id,
+                original_filename,
+                stored_filename,
+                content_type,
+                file_size,
+                uploaded_at
+            FROM shipment_documents
+            WHERE shipment_id = ?
+            ORDER BY uploaded_at DESC
+        """
+
+        with sqlite3.connect(self.database_name) as conn:
+            conn.row_factory = sqlite3.Row
+
+            rows = conn.execute(
+                query,
+                (shipment_id,),
+            ).fetchall()
+
+            return [dict(row) for row in rows]

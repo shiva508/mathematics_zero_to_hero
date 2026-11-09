@@ -245,3 +245,45 @@ def download_invoice(invoice_id: int):
         media_type="application/pdf",
         filename=invoice["original_filename"],
     )
+
+@app.get(
+    "/shipments/{awb}/documents",
+    response_class=HTMLResponse,
+)
+def shipment_documents_page(request: Request, awb: str):
+    shipment = db.get_shipment(awb)
+
+    if shipment is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Shipment not found",
+        )
+
+    return templates.TemplateResponse(
+        request=request,
+        name="shipment_documents.html",
+        context={
+            "title": f"Documents - {awb}",
+            "awb": awb,
+        },
+    )
+
+@app.get("/api/shipments/{awb}/documents")
+def get_shipment_documents(awb: str):
+    shipment = db.get_shipment(awb)
+
+    if shipment is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Shipment not found",
+        )
+
+    documents = db.get_invoices_by_shipment_id(
+        shipment["id"]
+    )
+    print(documents)
+    return {
+        "awb": awb,
+        "shipment_id": shipment["id"],
+        "documents": documents,
+    }

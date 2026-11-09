@@ -158,6 +158,16 @@ th {
     color: #166534;
 }
 
+.awb-link {
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.awb-link:hover {
+    text-decoration: underline;
+}
+
 @media (max-width: 768px) {
     .app {
         flex-direction: column;

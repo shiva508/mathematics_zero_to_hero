@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ title }}</title>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+<div class="app">
+
+    <aside class="sidebar">
+        <h2>DocFlow</h2>
+
+        <nav>
+            <a href="/">Dashboard</a>
+        </nav>
+    </aside>
+
+    <main class="content">
+
+        <header class="header">
+            <div>
+                <h1>Shipment Documents</h1>
+                <p>AWB Number: <strong>{{ awb }}</strong></p>
+            </div>
+
+            <a href="/">Back to Dashboard</a>
+        </header>
+
+        <section class="panel">
+            <h2>Uploaded Documents</h2>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Document ID</th>
+                            <th>Filename</th>
+                            <th>Size</th>
+                            <th>Uploaded At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="documents-table">
+                        <tr>
+                            <td colspan="5">Loading documents...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p id="documents-message"></p>
+        </section>
+
+    </main>
+</div>
+
+<script>
+    const shipmentAwb = {{ awb | tojson }};
+</script>
+
+<script src="/static/js/shipment_documents.js"></script>
+
+</body>
+</html>

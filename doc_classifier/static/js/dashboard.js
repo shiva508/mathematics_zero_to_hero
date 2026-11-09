@@ -45,49 +45,95 @@ async function loadDashboard() {
     }
 }
 
+// function renderShipments(shipments) {
+//     const table = document.getElementById("shipment-table");
+//     const shipmentSelect = document.getElementById("shipment-id");
+//
+//     table.replaceChildren();
+//
+//     shipmentSelect.replaceChildren();
+//
+//     const defaultOption = document.createElement("option");
+//     defaultOption.value = "";
+//     defaultOption.textContent = "Select a shipment";
+//     shipmentSelect.appendChild(defaultOption);
+//
+//     if (!shipments.length) {
+//         const row = table.insertRow();
+//         const cell = row.insertCell();
+//
+//         cell.colSpan = 5;
+//         cell.textContent = "No shipments found.";
+//
+//         return;
+//     }
+//
+//     for (const shipment of shipments) {
+//         const row = table.insertRow();
+//
+//         [
+//             shipment.id,
+//             shipment.awb,
+//             shipment.origin,
+//             shipment.destination,
+//             shipment.status
+//         ].forEach(value => {
+//             const cell = row.insertCell();
+//             cell.textContent = value ?? "";
+//         });
+//
+//         const option = document.createElement("option");
+//         option.value = shipment.id;
+//         option.textContent = `${shipment.awb} — ${shipment.origin} to ${shipment.destination}`;
+//
+//         shipmentSelect.appendChild(option);
+//     }
+// }
+
 function renderShipments(shipments) {
-    const table = document.getElementById("shipment-table");
-    const shipmentSelect = document.getElementById("shipment-id");
+    const tbody = document.getElementById("shipment-table");
 
-    table.replaceChildren();
+    tbody.innerHTML = "";
 
-    shipmentSelect.replaceChildren();
-
-    const defaultOption = document.createElement("option");
-    defaultOption.value = "";
-    defaultOption.textContent = "Select a shipment";
-    shipmentSelect.appendChild(defaultOption);
-
-    if (!shipments.length) {
-        const row = table.insertRow();
-        const cell = row.insertCell();
-
-        cell.colSpan = 5;
-        cell.textContent = "No shipments found.";
-
+    if (!shipments || shipments.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5">No shipments found.</td>
+            </tr>
+        `;
         return;
     }
 
-    for (const shipment of shipments) {
-        const row = table.insertRow();
+    shipments.forEach((shipment) => {
+        const row = document.createElement("tr");
 
-        [
-            shipment.id,
-            shipment.awb,
-            shipment.origin,
-            shipment.destination,
-            shipment.status
-        ].forEach(value => {
-            const cell = row.insertCell();
-            cell.textContent = value ?? "";
-        });
+        const awbCell = document.createElement("td");
+        const awbLink = document.createElement("a");
 
-        const option = document.createElement("option");
-        option.value = shipment.id;
-        option.textContent = `${shipment.awb} — ${shipment.origin} to ${shipment.destination}`;
+        awbLink.href =
+            `/shipments/${encodeURIComponent(shipment.awb)}/documents`;
 
-        shipmentSelect.appendChild(option);
-    }
+        awbLink.textContent = shipment.awb;
+        awbLink.className = "awb-link";
+
+        awbCell.appendChild(awbLink);
+
+        row.appendChild(document.createElement("td")).textContent =
+            shipment.id;
+
+        row.appendChild(awbCell);
+
+        row.appendChild(document.createElement("td")).textContent =
+            shipment.origin;
+
+        row.appendChild(document.createElement("td")).textContent =
+            shipment.destination;
+
+        row.appendChild(document.createElement("td")).textContent =
+            shipment.status;
+
+        tbody.appendChild(row);
+    });
 }
 
 function renderInvoices(invoices) {
